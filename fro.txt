@@ -1,0 +1,51 @@
+import { useState } from "react";
+import axios from 'axios';
+
+function App() {
+  const [id,setId] = useState('');
+  const [name, setName] = useState('');
+  const [dept, setDept] = useState('');
+  const [response, setResponse] = useState('');
+
+  const handle = (e) => {
+    e.preventDefault();
+
+    const employee = {
+      id: id,
+      name: name,
+      dept: dept
+    };
+
+    axios.post('http://localhost:9191/employee/add', employee)
+      .then(res => {
+        setResponse(res.data);
+      })
+      .catch(err => {
+        console.error('Error posting data:', err);
+      });
+      document.writeln("Record submitted");
+  };
+
+  return (
+    <div className="card col-md-3 offset-4 mt-5">
+      <h1>Login Register</h1>
+      <div className="card-body">
+      <form onSubmit={handle}>
+        <label>  Id:</label>
+        <input type="number" value={id} onChange={(e) => setId(e.target.value)} className="form-control w-25" autoComplete="off"></input>
+        <label>  Name:</label>
+        <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="form-control w-25" autoComplete="off" />
+
+        <label>  Department:</label>
+        <input type="text" value={dept} onChange={(e) => setDept(e.target.value)} className="form-control w-25" autoComplete="off" />
+        
+        <br />
+        <button type="button" className="btn btn-danger me-3">Cancel</button>
+        <button type="submit" className="btn btn-success">Submit</button>
+      </form>
+    </div>
+    </div>
+  );
+}
+
+export default App;
